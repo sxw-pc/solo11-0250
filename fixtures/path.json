@@ -1,0 +1,58 @@
+[
+  {
+    "subsystem": "ready",
+    "payload": {
+      "event_id": "x1",
+      "op": "probe",
+      "id": "db-p1",
+      "attempt": "try-db",
+      "at": 30,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "ready",
+    "payload": {
+      "event_id": "x2",
+      "op": "probe",
+      "id": "db-p2",
+      "attempt": "try-db",
+      "at": 31,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "ready",
+    "payload": {
+      "event_id": "x3",
+      "op": "publish",
+      "id": "receipt-db",
+      "attempt": "try-db",
+      "at": 32
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "x4",
+      "op": "plan",
+      "id": "wave-api",
+      "service": "api",
+      "generation": 1,
+      "deadline": 90
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "x5",
+      "op": "launch",
+      "id": "try-api",
+      "wave": "wave-api",
+      "slot": "slot-a",
+      "token": "token-api",
+      "at": 35,
+      "expires": 70
+    }
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "event_id": "rf1",
+    "op": "probe",
+    "id": "late",
+    "attempt": "try-api",
+    "at": 99,
+    "healthy": true
+  },
+  {
+    "event_id": "rf2",
+    "op": "revoke",
+    "id": "receipt-db"
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "event_id": "c1",
+    "op": "revision",
+    "id": "database",
+    "generation": 1,
+    "critical": true
+  },
+  {
+    "event_id": "c2",
+    "op": "revision",
+    "id": "api",
+    "generation": 1,
+    "critical": true
+  },
+  {
+    "event_id": "c3",
+    "op": "edge",
+    "service": "api",
+    "dependency": "database",
+    "critical": true,
+    "revision": 1
+  },
+  {
+    "event_id": "c4",
+    "op": "seal",
+    "id": "database",
+    "generation": 1
+  },
+  {
+    "event_id": "c5",
+    "op": "seal",
+    "id": "api",
+    "generation": 1
+  },
+  {
+    "event_id": "c6",
+    "op": "token",
+    "id": "token-db",
+    "service": "database",
+    "generation": 1,
+    "expires": 100,
+    "at": 10
+  },
+  {
+    "event_id": "c7",
+    "op": "token",
+    "id": "token-api",
+    "service": "api",
+    "generation": 1,
+    "expires": 100,
+    "at": 10
+  }
+]

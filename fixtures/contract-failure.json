@@ -1,0 +1,17 @@
+[
+  {
+    "event_id": "cf1",
+    "op": "revision",
+    "id": "api",
+    "generation": 1,
+    "critical": true
+  },
+  {
+    "event_id": "cf2",
+    "op": "edge",
+    "service": "api",
+    "dependency": "database",
+    "critical": true,
+    "revision": 1
+  }
+]

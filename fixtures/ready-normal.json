@@ -1,0 +1,25 @@
+[
+  {
+    "event_id": "r1",
+    "op": "probe",
+    "id": "api-p1",
+    "attempt": "try-api",
+    "at": 40,
+    "healthy": true
+  },
+  {
+    "event_id": "r2",
+    "op": "probe",
+    "id": "api-p2",
+    "attempt": "try-api",
+    "at": 41,
+    "healthy": true
+  },
+  {
+    "event_id": "r3",
+    "op": "publish",
+    "id": "receipt-api",
+    "attempt": "try-api",
+    "at": 42
+  }
+]

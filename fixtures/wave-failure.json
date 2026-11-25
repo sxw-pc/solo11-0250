@@ -1,0 +1,21 @@
+[
+  {
+    "event_id": "wf1",
+    "op": "slot",
+    "id": "slot-a",
+    "node": "node-a",
+    "capacity": 1,
+    "generation": 1,
+    "healthy": true
+  },
+  {
+    "event_id": "wf2",
+    "op": "launch",
+    "id": "try-extra",
+    "wave": "wave-db",
+    "slot": "slot-a",
+    "token": "token-db",
+    "at": 21,
+    "expires": 60
+  }
+]

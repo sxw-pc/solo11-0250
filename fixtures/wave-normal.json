@@ -1,0 +1,29 @@
+[
+  {
+    "event_id": "w1",
+    "op": "slot",
+    "id": "slot-a",
+    "node": "node-a",
+    "capacity": 1,
+    "generation": 1,
+    "healthy": true
+  },
+  {
+    "event_id": "w2",
+    "op": "plan",
+    "id": "wave-db",
+    "service": "database",
+    "generation": 1,
+    "deadline": 80
+  },
+  {
+    "event_id": "w3",
+    "op": "launch",
+    "id": "try-db",
+    "wave": "wave-db",
+    "slot": "slot-a",
+    "token": "token-db",
+    "at": 20,
+    "expires": 60
+  }
+]
