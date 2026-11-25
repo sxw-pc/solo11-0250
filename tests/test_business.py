@@ -74,7 +74,35 @@ class Business(unittest.TestCase):
         ready.run(self.db,{'event_id':'p2','op':'probe','id':'p2','attempt':'api-try','at':37,'healthy':True})
         self.assertEqual(ready.run(self.db,{'event_id':'publish','op':'publish','id':'r-api','attempt':'api-try','at':41})['decision'],'parent_receipt_stale')
         self.assertEqual(ready.run(self.db,{'event_id':'publish-early','op':'publish','id':'r-api','attempt':'api-try','at':39})['decision'],'published')
+        self.assertEqual(one(self.db,'SELECT degrade_until FROM readiness_receipts WHERE id=?',('r-api',))['degrade_until'],40)
+        self.assertEqual(ready.run(self.db,{'event_id':'expired','op':'expire','at':41})['receipts'],['r-api'])
+        self.assertEqual(one(self.db,'SELECT status FROM readiness_receipts WHERE id=?',('r-api',))['status'],'revoked')
         self.assertTrue(replay(self.path)['verified'])
+
+    def test_slot_generation_change_fences_old_attempt(self):
+        self.base()
+        ready.run(self.db,{'event_id':'p1','op':'probe','id':'p1','attempt':'try-db','at':30,'healthy':True})
+        ready.run(self.db,{'event_id':'p2','op':'probe','id':'p2','attempt':'try-db','at':31,'healthy':True})
+        wave.run(self.db,{'event_id':'slot-new','op':'slot','id':'slot-a','node':'node-a','capacity':1,'generation':2,'healthy':True})
+        self.assertEqual(ready.run(self.db,{'event_id':'pub','op':'publish','id':'old-receipt','attempt':'try-db','at':32})['decision'],'stale_startup_slot')
+
+    def test_revoke_reaches_grandchild_and_revision_drops_old_edges(self):
+        self.published_db();fixture(self.db,'ready-normal.json',ready)
+        contract.run(self.db,{'event_id':'third-rev','op':'revision','id':'frontend','generation':1})
+        contract.run(self.db,{'event_id':'third-edge','op':'edge','service':'frontend','dependency':'api','critical':True,'revision':1})
+        contract.run(self.db,{'event_id':'third-seal','op':'seal','id':'frontend','generation':1})
+        # A grandchild receipt is created from a real attempt after its parent is ready.
+        contract.run(self.db,{'event_id':'third-token','op':'token','id':'token-front','service':'frontend','generation':1,'expires':100,'at':10})
+        wave.run(self.db,{'event_id':'slot-front','op':'slot','id':'slot-front','node':'node-front','capacity':1,'generation':1,'healthy':True})
+        wave.run(self.db,{'event_id':'wave-front','op':'plan','id':'wave-front','service':'frontend','generation':1,'deadline':90})
+        wave.run(self.db,{'event_id':'try-front','op':'launch','id':'try-front','wave':'wave-front','slot':'slot-front','token':'token-front','at':45,'expires':70})
+        ready.run(self.db,{'event_id':'front-p1','op':'probe','id':'front-p1','attempt':'try-front','at':46,'healthy':True})
+        ready.run(self.db,{'event_id':'front-p2','op':'probe','id':'front-p2','attempt':'try-front','at':47,'healthy':True})
+        self.assertEqual(ready.run(self.db,{'event_id':'front-pub','op':'publish','id':'receipt-front','attempt':'try-front','at':48})['decision'],'published')
+        self.assertEqual(ready.run(self.db,{'event_id':'revoke','op':'revoke','id':'receipt-db'})['children'],['api','frontend'])
+        self.assertEqual(one(self.db,'SELECT status FROM readiness_receipts WHERE id=?',('receipt-front',))['status'],'revoked')
+        contract.run(self.db,{'event_id':'frontend-v2','op':'revision','id':'frontend','generation':2})
+        self.assertIsNone(one(self.db,'SELECT * FROM dependency_edges WHERE service=?',('frontend',)))
 
     def test_same_business_wave_id_with_new_event_is_rejected(self):
         self.base()

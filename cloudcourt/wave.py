@@ -2,7 +2,7 @@ from .store import act,one,many
 SCHEMA='''
 CREATE TABLE IF NOT EXISTS boot_waves(id TEXT PRIMARY KEY,service TEXT,generation INTEGER,deadline INTEGER,level INTEGER,status TEXT);
 CREATE TABLE IF NOT EXISTS startup_slots(id TEXT PRIMARY KEY,node TEXT,capacity INTEGER,generation INTEGER,healthy INTEGER);
-CREATE TABLE IF NOT EXISTS start_attempts(id TEXT PRIMARY KEY,wave TEXT,slot TEXT,generation INTEGER,attempt_no INTEGER,started INTEGER,expires INTEGER,status TEXT);
+CREATE TABLE IF NOT EXISTS start_attempts(id TEXT PRIMARY KEY,wave TEXT,slot TEXT,generation INTEGER,slot_generation INTEGER,attempt_no INTEGER,started INTEGER,expires INTEGER,status TEXT);
 '''
 
 def handle(db,x):
@@ -38,13 +38,13 @@ def handle(db,x):
         deps=many(db,'SELECT * FROM dependency_edges WHERE service=?',(w['service'],))
         for d in deps:
             if d['critical']:
-                parent=one(db,"SELECT * FROM readiness_receipts WHERE service=? AND status='published' ORDER BY published_at DESC LIMIT 1",(d['dependency'],))
+                parent=one(db,"SELECT * FROM readiness_receipts WHERE service=? AND status='published' AND (degrade_until IS NULL OR degrade_until>=?) ORDER BY published_at DESC LIMIT 1",(d['dependency'],x['at']))
                 revision=one(db,'SELECT generation FROM service_revisions WHERE id=?',(d['dependency'],))
                 if not parent or not revision or parent['generation']!=revision['generation']:
                     grant=one(db,"SELECT 1 FROM degrade_grants WHERE service=? AND dependency=? AND service_generation=? AND status='active' AND until_ts>=?",(w['service'],d['dependency'],w['generation'],x['at']))
                     if not grant:return {'decision':'dependency_not_ready','service':d['dependency']}
         attempt_no=one(db,'SELECT COALESCE(MAX(attempt_no),0)+1 next FROM start_attempts WHERE wave=?',(x['wave'],))['next']
-        db.execute('INSERT INTO start_attempts VALUES(?,?,?,?,?,?,?,?)',(x['id'],x['wave'],x['slot'],w['generation'],attempt_no,x['at'],x['expires'],'running'))
+        db.execute('INSERT INTO start_attempts VALUES(?,?,?,?,?,?,?,?,?)',(x['id'],x['wave'],x['slot'],w['generation'],slot['generation'],attempt_no,x['at'],x['expires'],'running'))
         db.execute("UPDATE boot_waves SET status='running' WHERE id=?",(w['id'],))
         return {'decision':'launched','attempt_no':attempt_no}
     if op=='timeout':

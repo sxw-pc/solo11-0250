@@ -13,6 +13,7 @@ def handle(db,x):
         if old and x['generation']<=old['generation']:return {'decision':'stale_revision'}
         db.execute('INSERT INTO service_revisions VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET generation=excluded.generation,status=excluded.status,critical=excluded.critical',(x['id'],x['generation'],'draft',int(x.get('critical',True))))
         db.execute("UPDATE bootstrap_tokens SET status='stale' WHERE service=? AND generation<?",(x['id'],x['generation']))
+        db.execute('DELETE FROM dependency_edges WHERE service=? AND revision<?',(x['id'],x['generation']))
         return {'decision':'revision_recorded'}
     if op=='edge':
         a=one(db,'SELECT * FROM service_revisions WHERE id=?',(x['service'],))
@@ -48,7 +49,7 @@ def handle(db,x):
         if not s:return {'decision':'unknown_service'}
         missing=[]
         for edge in many(db,'SELECT * FROM dependency_edges WHERE service=? AND critical=1',(x['service'],)):
-            parent=one(db,"SELECT * FROM readiness_receipts WHERE service=? AND status='published' ORDER BY published_at DESC LIMIT 1",(edge['dependency'],))
+            parent=one(db,"SELECT * FROM readiness_receipts WHERE service=? AND status='published' AND (degrade_until IS NULL OR degrade_until>=?) ORDER BY published_at DESC LIMIT 1",(edge['dependency'],x.get('at',0)))
             rev=one(db,'SELECT generation FROM service_revisions WHERE id=?',(edge['dependency'],))
             if not parent or not rev or parent['generation']!=rev['generation']:
                 missing.append(edge['dependency'])
