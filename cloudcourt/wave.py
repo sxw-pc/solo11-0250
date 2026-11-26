@@ -35,6 +35,15 @@ def handle(db,x):
         if x['expires']<=x['at'] or x['expires']>w['deadline']:return {'decision':'invalid_deadline'}
         occupied=one(db,"SELECT COUNT(*) n FROM start_attempts WHERE slot=? AND status='running'",(x['slot'],))['n']
         if occupied>=slot['capacity']:return {'decision':'slot_full'}
+        # 电力承诺复核：槽有空位不等于共享馈线/UPS 能承受这次实际启动时刻的冲击峰值。
+        # 不带 power_commitment 的旧调用保持原有波次行为。
+        power_binding=x.get('power_commitment') or x.get('commitment') or x.get('power')
+        power_verdict=None
+        if power_binding is not None:
+            from . import power
+            power_verdict=power.authorize_launch(db,x,w)
+            if power_verdict is None or power_verdict.get('decision')!='launch_authorized':
+                return power_verdict or {'decision':'power_commitment_missing'}
         deps=many(db,'SELECT * FROM dependency_edges WHERE service=?',(w['service'],))
         for d in deps:
             if d['critical']:
@@ -46,7 +55,13 @@ def handle(db,x):
         attempt_no=one(db,'SELECT COALESCE(MAX(attempt_no),0)+1 next FROM start_attempts WHERE wave=?',(x['wave'],))['next']
         db.execute('INSERT INTO start_attempts VALUES(?,?,?,?,?,?,?,?,?)',(x['id'],x['wave'],x['slot'],w['generation'],slot['generation'],attempt_no,x['at'],x['expires'],'running'))
         db.execute("UPDATE boot_waves SET status='running' WHERE id=?",(w['id'],))
-        return {'decision':'launched','attempt_no':attempt_no}
+        result={'decision':'launched','attempt_no':attempt_no}
+        if power_verdict is not None:
+            from . import power
+            power.bind_launch(db,power_verdict['commitment'],x['id'],x['at'])
+            result['power_commitment']=power_verdict['commitment']
+            result['power_worst_peak_kw']=power_verdict['worst_peak_kw']
+        return result
     if op=='timeout':
         a=one(db,'SELECT * FROM start_attempts WHERE id=?',(x['id'],))
         if not a or a['status']!='running' or a['expires']>=x['at']:return {'decision':'not_timed_out'}

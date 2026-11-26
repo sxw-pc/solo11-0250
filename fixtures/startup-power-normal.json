@@ -1,0 +1,28 @@
+[
+  {"event_id": "spn-ups", "op": "segment", "id": "ups-shared", "kind": "ups", "rated_kw": 12, "margin_kw": 0, "evidence_required": true, "expect_decision": "segment_recorded"},
+  {"event_id": "spn-fa", "op": "feed", "id": "feed-a", "rack": "rack-shared", "rated_kw": 6, "revision": 1, "expect_decision": "feed_recorded"},
+  {"event_id": "spn-fb", "op": "feed", "id": "feed-b", "rack": "rack-shared", "rated_kw": 6, "revision": 1, "expect_decision": "feed_recorded"},
+  {"event_id": "spn-ta", "op": "topology", "feed": "feed-a", "segment": "ups-shared", "backup_feed": "feed-b", "sensor_generation": 1, "expect_decision": "topology_recorded"},
+  {"event_id": "spn-tb", "op": "topology", "feed": "feed-b", "segment": "ups-shared", "backup_feed": "feed-a", "sensor_generation": 1, "expect_decision": "topology_recorded"},
+
+  {"event_id": "spn-ma", "op": "measurement", "id": "meas-a", "feed": "feed-a", "generation": 1, "at": 8, "measured_kw": 5, "expect_decision": "measurement_recorded"},
+  {"event_id": "spn-mb", "op": "measurement", "id": "meas-b", "feed": "feed-b", "generation": 1, "at": 8, "measured_kw": 0, "expect_decision": "measurement_recorded"},
+  {"event_id": "spn-mu", "op": "measurement", "id": "meas-u", "segment": "ups-shared", "generation": 1, "at": 8, "measured_kw": 5, "expect_decision": "measurement_recorded"},
+
+  {"event_id": "spn-dbload", "op": "production", "id": "load-db", "service": "database", "node": "node-db", "feed": "feed-a", "run_kw": 5, "priority": 100, "at": 0, "expect_decision": "production_recorded"},
+  {"event_id": "spn-papi", "op": "profile", "service": "api", "generation": 1, "inrush_kw": 4, "inrush_ticks": 2, "warm_kw": 2, "warm_ticks": 2, "run_kw": 1, "expect_decision": "profile_recorded"},
+  {"event_id": "spn-pidx", "op": "profile", "service": "index", "generation": 1, "inrush_kw": 4, "inrush_ticks": 2, "warm_kw": 1, "warm_ticks": 2, "run_kw": 1, "expect_decision": "profile_recorded"},
+
+  {"event_id": "spn-capi", "op": "commit", "id": "commit-api", "wave": "wave-api", "service": "api", "generation": 1, "feed": "feed-b", "arrangement": "stagger-local", "start_at": 20, "at": 15, "expect_decision": "power_committed"},
+  {"event_id": "spn-bapi", "op": "bind", "commitment": "commit-api", "attempt": "try-api", "at": 20, "expect_decision": "commitment_bound"},
+  {"event_id": "spn-rapi", "op": "receipt", "commitment": "commit-api", "at": 22, "expect_decision": "receipt_bound"},
+
+  {"event_id": "spn-cidx", "op": "commit", "id": "commit-idx", "wave": "wave-idx", "service": "index", "generation": 1, "feed": "feed-b", "arrangement": "stagger-local", "start_at": 22, "at": 15, "expect_decision": "power_committed"},
+  {"event_id": "spn-bidx", "op": "bind", "commitment": "commit-idx", "attempt": "try-idx", "at": 22, "expect_decision": "commitment_bound"},
+  {"event_id": "spn-ridx", "op": "receipt", "commitment": "commit-idx", "at": 24, "expect_decision": "receipt_bound"},
+
+  {"event_id": "spn-cost0", "op": "cost", "id": "cost-stagger", "arrangement": "stagger-local", "service": "index", "kind": "no_extra_facility_fee", "amount": 0, "party": "customer", "at": 0, "note": "错峰等待，无额外设施费用", "expect_decision": "cost_recorded"},
+  {"event_id": "spn-costrep", "op": "cost_report", "arrangement": "stagger-local", "expect_decision": "cost_report"},
+  {"event_id": "spn-assess", "op": "assess", "at": 30, "expect_decision": "power_assessed"},
+  {"event_id": "spn-avail", "op": "availability", "expect_decision": "power_availability"}
+]

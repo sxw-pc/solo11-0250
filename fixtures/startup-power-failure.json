@@ -1,0 +1,50 @@
+[
+  {"event_id": "spf-bad-ups", "op": "segment", "id": "ups-bad", "rated_kw": 0, "expect_decision": "invalid_segment"},
+  {"event_id": "spf-topo-missing", "op": "topology", "feed": "feed-ghost", "segment": "ups-shared", "expect_decision": "feed_missing"},
+
+  {"event_id": "spf-ups", "op": "segment", "id": "ups-shared", "kind": "ups", "rated_kw": 12, "expect_decision": "segment_recorded"},
+  {"event_id": "spf-fa", "op": "feed", "id": "feed-a", "rack": "rack-shared", "rated_kw": 6, "revision": 1, "expect_decision": "feed_recorded"},
+  {"event_id": "spf-fb", "op": "feed", "id": "feed-b", "rack": "rack-shared", "rated_kw": 6, "revision": 1, "expect_decision": "feed_recorded"},
+  {"event_id": "spf-ta", "op": "topology", "feed": "feed-a", "segment": "ups-shared", "backup_feed": "feed-b", "expect_decision": "topology_recorded"},
+  {"event_id": "spf-tb", "op": "topology", "feed": "feed-b", "segment": "ups-shared", "backup_feed": "feed-a", "expect_decision": "topology_recorded"},
+  {"event_id": "spf-dbload", "op": "production", "id": "load-db", "service": "database", "node": "db1", "feed": "feed-a", "run_kw": 5, "priority": 100, "at": 0, "expect_decision": "production_recorded"},
+  {"event_id": "spf-papi", "op": "profile", "service": "api", "generation": 1, "inrush_kw": 4, "inrush_ticks": 2, "warm_kw": 2, "warm_ticks": 2, "run_kw": 1, "expect_decision": "profile_recorded"},
+  {"event_id": "spf-pidx", "op": "profile", "service": "index", "generation": 1, "inrush_kw": 4, "inrush_ticks": 2, "warm_kw": 1, "warm_ticks": 2, "run_kw": 1, "expect_decision": "profile_recorded"},
+
+  {"event_id": "spf-capi", "op": "commit", "id": "commit-api", "service": "api", "generation": 1, "feed": "feed-b", "start_at": 20, "at": 10, "expect_decision": "power_committed"},
+  {"event_id": "spf-cidx-same", "op": "commit", "id": "commit-idx-same", "service": "index", "generation": 1, "feed": "feed-b", "start_at": 20, "at": 10, "expect_decision": "power_peak_exceeded"},
+  {"event_id": "spf-cidx-stagger", "op": "commit", "id": "commit-idx", "service": "index", "generation": 1, "feed": "feed-b", "start_at": 22, "at": 10, "expect_decision": "power_committed"},
+
+  {"event_id": "spf-ups-strict", "op": "segment", "id": "ups-strict", "rated_kw": 12, "evidence_required": true, "expect_decision": "segment_recorded"},
+  {"event_id": "spf-fz", "op": "feed", "id": "feed-z", "rack": "rack-strict", "rated_kw": 6, "revision": 1, "expect_decision": "feed_recorded"},
+  {"event_id": "spf-tz", "op": "topology", "feed": "feed-z", "segment": "ups-strict", "evidence_required": true, "expect_decision": "topology_recorded"},
+  {"event_id": "spf-pside", "op": "profile", "service": "sidecar", "generation": 1, "inrush_kw": 2, "inrush_ticks": 1, "warm_kw": 1, "warm_ticks": 1, "run_kw": 1, "expect_decision": "profile_recorded"},
+  {"event_id": "spf-commit-noev", "op": "commit", "id": "commit-strict-0", "service": "sidecar", "generation": 1, "feed": "feed-z", "start_at": 50, "at": 50, "expect_decision": "power_measurement_missing"},
+
+  {"event_id": "spf-cal-z", "op": "calibrate", "target_kind": "feed", "target": "feed-z", "generation": 2, "expect_decision": "calibration_recorded"},
+  {"event_id": "spf-mz-old", "op": "measurement", "id": "meas-z-old", "feed": "feed-z", "generation": 1, "at": 30, "measured_kw": 1, "expect_decision": "measurement_recorded"},
+  {"event_id": "spf-commit-calbad", "op": "commit", "id": "commit-strict-1", "service": "sidecar", "generation": 1, "feed": "feed-z", "start_at": 50, "at": 50, "expect_decision": "sensor_calibration_stale"},
+
+  {"event_id": "spf-mz-late", "op": "measurement", "id": "meas-z-late", "feed": "feed-z", "generation": 2, "at": 40, "recorded_at": 100, "measured_kw": 1, "expect_decision": "measurement_recorded"},
+  {"event_id": "spf-commit-late", "op": "commit", "id": "commit-strict-2", "service": "sidecar", "generation": 1, "feed": "feed-z", "start_at": 50, "at": 50, "expect_decision": "power_measurement_late"},
+
+  {"event_id": "spf-mz-ok", "op": "measurement", "id": "meas-z-ok", "feed": "feed-z", "generation": 2, "at": 45, "recorded_at": 45, "measured_kw": 1, "expect_decision": "measurement_recorded"},
+  {"event_id": "spf-mus-ok", "op": "measurement", "id": "meas-us-ok", "segment": "ups-strict", "generation": 1, "at": 45, "recorded_at": 45, "measured_kw": 1, "expect_decision": "measurement_recorded"},
+  {"event_id": "spf-commit-ok", "op": "commit", "id": "commit-strict-3", "service": "sidecar", "generation": 1, "feed": "feed-z", "start_at": 50, "at": 50, "expect_decision": "power_committed"},
+
+  {"event_id": "spf-fw", "op": "feed", "id": "feed-w", "rack": "rack-nameplate", "rated_kw": 6, "revision": 1, "expect_decision": "feed_recorded"},
+  {"event_id": "spf-upsw", "op": "segment", "id": "ups-w", "rated_kw": 12, "evidence_required": true, "expect_decision": "segment_recorded"},
+  {"event_id": "spf-tw", "op": "topology", "feed": "feed-w", "segment": "ups-w", "evidence_required": true, "expect_decision": "topology_recorded"},
+  {"event_id": "spf-nameplate", "op": "commit", "id": "commit-nameplate", "service": "sidecar", "generation": 1, "feed": "feed-w", "start_at": 50, "at": 50, "allow_nameplate": true, "expect_decision": "power_committed"},
+
+  {"event_id": "spf-feedout", "op": "feed_outage", "feed": "feed-a", "at": 30, "expect_decision": "feed_failure_recorded"},
+  {"event_id": "spf-dirs1", "op": "directives", "expect_decision": "directives_listed"},
+  {"event_id": "spf-upsout", "op": "segment_outage", "segment": "ups-shared", "at": 31, "expect_decision": "ups_failure_recorded"},
+  {"event_id": "spf-assess-fail", "op": "assess", "at": 32, "down_segments": ["ups-shared"], "expect_decision": "power_assessed"},
+
+  {"event_id": "spf-upext", "op": "segment", "id": "ups-ext", "kind": "ups", "rated_kw": 8, "expect_decision": "segment_recorded"},
+  {"event_id": "spf-fext", "op": "feed", "id": "feed-ext", "rack": "rack-external", "rated_kw": 6, "revision": 1, "expect_decision": "feed_recorded"},
+  {"event_id": "spf-text", "op": "topology", "feed": "feed-ext", "segment": "ups-ext", "expect_decision": "topology_recorded"},
+  {"event_id": "spf-rent", "op": "cost", "id": "cost-rental", "arrangement": "external-ups-rental", "service": "index", "kind": "external_rack_rental", "amount": 3, "party": "customer", "at": 20, "note": "独立 UPS 外部机架租用，客户承担", "expect_decision": "cost_recorded"},
+  {"event_id": "spf-costrep", "op": "cost_report", "arrangement": "external-ups-rental", "expect_decision": "cost_report"}
+]

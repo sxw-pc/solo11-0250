@@ -39,6 +39,9 @@ def handle(db,x):
         db.execute('INSERT INTO readiness_receipts VALUES(?,?,?,?,?,?,?)',(x['id'],w['service'],w['generation'],a['id'],'published',x['at'],min(degraded) if degraded else None))
         db.execute("UPDATE start_attempts SET status='complete' WHERE id=?",(a['id'],))
         db.execute("UPDATE boot_waves SET status='complete' WHERE id=?",(w['id'],))
+        # 实际就绪回执到位后，启动冲击承诺转为运行期受保护负载。
+        from . import power
+        power.energize_attempt(db,a['id'],x['at'])
         return {'decision':'published'}
     if op=='revoke':
         r=one(db,'SELECT * FROM readiness_receipts WHERE id=?',(x['id'],))
