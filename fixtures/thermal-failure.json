@@ -1,0 +1,4 @@
+[
+  {"event_id":"thermal-missing-sample","op":"sample","id":"missing","zone":"missing","sensor":"inlet","at":1,"celsius":30},
+  {"event_id":"thermal-missing-check","op":"check","id":"invalid","zone":"missing","node":"node-a","sample":"missing"}
+]

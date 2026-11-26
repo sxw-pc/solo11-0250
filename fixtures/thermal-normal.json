@@ -1,0 +1,5 @@
+[
+  {"event_id":"thermal-zone","op":"zone","id":"thermal-zone","rack":"rack-a","limit_c":40,"revision":1},
+  {"event_id":"thermal-sample","op":"sample","id":"thermal-sample","zone":"thermal-zone","sensor":"inlet","at":1,"celsius":30},
+  {"event_id":"thermal-check","op":"check","id":"thermal-check","zone":"thermal-zone","node":"node-a","sample":"thermal-sample"}
+]

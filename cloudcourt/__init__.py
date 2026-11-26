@@ -1,2 +1,2 @@
-from . import contract, wave, ready
-MODULES={'contract':contract, 'wave':wave, 'ready':ready}
+from . import contract, wave, ready, thermal
+MODULES={'contract':contract, 'wave':wave, 'ready':ready, 'thermal':thermal}
