@@ -1,0 +1,454 @@
+[
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "cap-c1",
+      "op": "revision",
+      "id": "database",
+      "generation": 1,
+      "critical": true
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "cap-c2",
+      "op": "revision",
+      "id": "service-b",
+      "generation": 1,
+      "critical": true
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "cap-c3",
+      "op": "edge",
+      "service": "service-b",
+      "dependency": "database",
+      "critical": true,
+      "revision": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "cap-c4",
+      "op": "seal",
+      "id": "database",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "cap-c5",
+      "op": "seal",
+      "id": "service-b",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "cap-c6",
+      "op": "token",
+      "id": "token-db",
+      "service": "database",
+      "generation": 1,
+      "expires": 200,
+      "at": 10
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "cap-c7",
+      "op": "token",
+      "id": "token-b",
+      "service": "service-b",
+      "generation": 1,
+      "expires": 200,
+      "at": 10
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "cap-w1",
+      "op": "slot",
+      "id": "slot-a",
+      "node": "node-a",
+      "capacity": 2,
+      "generation": 1,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "cap-w2",
+      "op": "plan",
+      "id": "wave-db",
+      "service": "database",
+      "generation": 1,
+      "deadline": 180
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "cap-w3",
+      "op": "launch",
+      "id": "try-db",
+      "wave": "wave-db",
+      "slot": "slot-a",
+      "token": "token-db",
+      "at": 20,
+      "expires": 80
+    }
+  },
+  {
+    "subsystem": "ready",
+    "payload": {
+      "event_id": "cap-r1",
+      "op": "probe",
+      "id": "cap-db-p1",
+      "attempt": "try-db",
+      "at": 22,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "ready",
+    "payload": {
+      "event_id": "cap-r2",
+      "op": "probe",
+      "id": "cap-db-p2",
+      "attempt": "try-db",
+      "at": 23,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "ready",
+    "payload": {
+      "event_id": "cap-r3",
+      "op": "publish",
+      "id": "receipt-db",
+      "attempt": "try-db",
+      "at": 24
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "cap-w4",
+      "op": "plan",
+      "id": "wave-b",
+      "service": "service-b",
+      "generation": 1,
+      "deadline": 180
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "cap-w5",
+      "op": "launch",
+      "id": "try-b",
+      "wave": "wave-b",
+      "slot": "slot-a",
+      "token": "token-b",
+      "at": 35,
+      "expires": 90
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-g1",
+      "op": "register_generator",
+      "id": "gen-b",
+      "dataset": "sandbox-b",
+      "isolated": true,
+      "at": 36
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-plan",
+      "op": "capacity_plan",
+      "id": "cp-b",
+      "service": "service-b",
+      "generation": 1,
+      "attempt": "try-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "window_start": 40,
+      "window_end": 44,
+      "target_clients": 500,
+      "classes": [
+        {
+          "class_id": "premium",
+          "clients": 300,
+          "priority": "high",
+          "min_throughput_mrps": 800,
+          "max_p99_ms": 200,
+          "max_error_bp": 100
+        },
+        {
+          "class_id": "standard",
+          "clients": 200,
+          "priority": "normal",
+          "min_throughput_mrps": 800,
+          "max_p99_ms": 200,
+          "max_error_bp": 1000
+        }
+      ],
+      "arrivals": [
+        {
+          "at": 40,
+          "class_id": "premium",
+          "request_id": "req-p1",
+          "kind": "business"
+        },
+        {
+          "at": 41,
+          "class_id": "premium",
+          "request_id": "req-p2",
+          "kind": "business"
+        },
+        {
+          "at": 42,
+          "class_id": "premium",
+          "request_id": "req-p3",
+          "kind": "business"
+        },
+        {
+          "at": 43,
+          "class_id": "premium",
+          "request_id": "req-p4",
+          "kind": "business"
+        },
+        {
+          "at": 41,
+          "class_id": "standard",
+          "request_id": "req-s1",
+          "kind": "business"
+        },
+        {
+          "at": 42,
+          "class_id": "standard",
+          "request_id": "req-s2",
+          "kind": "business"
+        },
+        {
+          "at": 43,
+          "class_id": "standard",
+          "request_id": "req-s3",
+          "kind": "business"
+        },
+        {
+          "at": 44,
+          "class_id": "standard",
+          "request_id": "req-s4",
+          "kind": "business"
+        }
+      ]
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-q1",
+      "op": "request",
+      "id": "req-p1",
+      "plan": "cp-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "at": 40,
+      "issued": true,
+      "outcome": "ok",
+      "latency_ms": 50,
+      "retries": 0
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-q2",
+      "op": "request",
+      "id": "req-p2",
+      "plan": "cp-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "at": 41,
+      "issued": true,
+      "outcome": "ok",
+      "latency_ms": 60,
+      "retries": 0
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-q3",
+      "op": "request",
+      "id": "req-p3",
+      "plan": "cp-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "at": 42,
+      "issued": true,
+      "outcome": "ok",
+      "latency_ms": 70,
+      "retries": 0
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-q4",
+      "op": "request",
+      "id": "req-p4",
+      "plan": "cp-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "at": 43,
+      "issued": true,
+      "outcome": "ok",
+      "latency_ms": 80,
+      "retries": 0
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-q5",
+      "op": "request",
+      "id": "req-s1",
+      "plan": "cp-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "at": 41,
+      "issued": true,
+      "outcome": "ok",
+      "latency_ms": 100,
+      "retries": 0
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-q6",
+      "op": "request",
+      "id": "req-s2",
+      "plan": "cp-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "at": 42,
+      "issued": true,
+      "outcome": "ok",
+      "latency_ms": 120,
+      "retries": 1
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-q7",
+      "op": "request",
+      "id": "req-s3",
+      "plan": "cp-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "at": 43,
+      "issued": true,
+      "outcome": "timeout",
+      "latency_ms": null,
+      "retries": 2
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-q8",
+      "op": "request",
+      "id": "req-empty-1",
+      "plan": "cp-b",
+      "generator": "gen-b",
+      "dataset": "sandbox-b",
+      "at": 44,
+      "kind": "empty",
+      "weight": 1000,
+      "issued": true,
+      "outcome": "ok",
+      "latency_ms": 1,
+      "retries": 0
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-gd1",
+      "op": "guard",
+      "plan": "cp-b",
+      "metric": "cpu_pct",
+      "observed": 55,
+      "limit": 90
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-gd2",
+      "op": "guard",
+      "plan": "cp-b",
+      "metric": "mem_pct",
+      "observed": 60,
+      "limit": 90
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-acc",
+      "op": "accept",
+      "plan": "cp-b"
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-cert",
+      "op": "certify",
+      "id": "cert-b-partial",
+      "plan": "cp-b",
+      "version": 1,
+      "at": 60,
+      "waitlist_until": 200,
+      "credits": 500
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-sign",
+      "op": "sign",
+      "id": "cert-b-partial",
+      "at": 61
+    }
+  },
+  {
+    "subsystem": "loadtest",
+    "payload": {
+      "event_id": "cap-onboard",
+      "op": "onboard",
+      "id": "onboard-b",
+      "certificate": "cert-b-partial",
+      "at": 62
+    }
+  }
+]
