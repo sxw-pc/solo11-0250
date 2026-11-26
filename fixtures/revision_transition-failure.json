@@ -1,0 +1,43 @@
+[
+  {
+    "event_id": "rtf1",
+    "op": "transition",
+    "id": "t-bad",
+    "service": "database",
+    "from_generation": 1,
+    "to_generation": 2,
+    "interface_compatible": false,
+    "migration_phase": "migrating",
+    "rollback_until": 500,
+    "edges": [],
+    "at": 70
+  },
+  {
+    "event_id": "rtf2",
+    "op": "rollback",
+    "id": "t-missing",
+    "data_format": "v1",
+    "confirmation_prefix": "CUST-",
+    "at": 71
+  },
+  {
+    "event_id": "rtf3",
+    "op": "permit",
+    "id": "permit-bad",
+    "service": "api",
+    "dependency": "database",
+    "operations": ["read", "execute"],
+    "approver": "",
+    "until": 0,
+    "at": 72
+  },
+  {
+    "event_id": "rtf4",
+    "op": "write",
+    "id": "bill-ghost",
+    "service": "ghost",
+    "amount": 1,
+    "key_format": "v1",
+    "at": 73
+  }
+]

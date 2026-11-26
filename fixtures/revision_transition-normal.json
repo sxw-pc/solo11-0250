@@ -1,0 +1,37 @@
+[
+  {
+    "event_id": "rt1",
+    "op": "transition",
+    "id": "t12",
+    "service": "database",
+    "from_generation": 1,
+    "to_generation": 2,
+    "interface_compatible": true,
+    "migration_phase": "none",
+    "rollback_until": 500,
+    "edges": [
+      {
+        "service": "api",
+        "dependency": "database"
+      }
+    ],
+    "at": 50
+  },
+  {
+    "event_id": "rt2",
+    "op": "permit",
+    "id": "permit-api",
+    "service": "api",
+    "dependency": "database",
+    "operations": ["read"],
+    "approver": "owner",
+    "until": 300,
+    "at": 55
+  },
+  {
+    "event_id": "rt3",
+    "op": "read",
+    "service": "api",
+    "at": 60
+  }
+]
