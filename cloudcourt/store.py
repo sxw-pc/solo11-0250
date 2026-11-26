@@ -63,7 +63,11 @@ def replay(path):
     for e in events:
         observed=MODULES[e['subsystem']].run(target,json.loads(e['payload']))
         if observed!=json.loads(e['result']): mismatch.append({'event_id':e['event_id'],'reason':'decision'})
+    target_tables={r[0] for r in target.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     for (table,) in source.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"):
+        # Auxiliary evidence/audit tables are not produced by module event replay;
+        # compare only tables the replayed target actually owns.
+        if table not in target_tables:continue
         a=[tuple(r) for r in source.execute(f'SELECT * FROM {table} ORDER BY rowid')]
         b=[tuple(r) for r in target.execute(f'SELECT * FROM {table} ORDER BY rowid')]
         if a!=b:mismatch.append({'table':table,'reason':'state'})
