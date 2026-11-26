@@ -1,0 +1,6 @@
+[
+  {"event_id":"duty-a","op":"shift","id":"duty-a","actor":"alice","site":"site-a","starts":1,"ends":5,"qualification":"startup"},
+  {"event_id":"duty-b","op":"shift","id":"duty-b","actor":"bob","site":"site-a","starts":5,"ends":10,"qualification":"startup"},
+  {"event_id":"duty-handoff","op":"handoff","id":"duty-handoff","outgoing":"duty-a","incoming":"duty-b","wave":"wave-a","at":5},
+  {"event_id":"duty-ack","op":"ack","id":"duty-ack","handoff":"duty-handoff","actor":"bob","at":5}
+]

@@ -1,0 +1,4 @@
+[
+  {"event_id":"duty-invalid","op":"shift","id":"invalid","actor":"eve","site":"site-a","starts":5,"ends":5,"qualification":"startup"},
+  {"event_id":"duty-missing-ack","op":"ack","id":"bad-ack","handoff":"missing","actor":"eve","at":5}
+]
