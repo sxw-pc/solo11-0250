@@ -54,6 +54,12 @@ def act(db,subsystem,payload,handler):
                    (subsystem,payload['op'],event_id,encoded,json.dumps(result,sort_keys=True,ensure_ascii=False)))
         return result
 
+def execute(db,subsystem,payload):
+    from . import MODULES, plugin_settlement
+    if subsystem in ('settlement','plugin-settlement'):
+        return plugin_settlement.run(db,payload)
+    return MODULES[subsystem].run(db,payload)
+
 def replay(path):
     from . import MODULES
     source=connect(path)

@@ -1,0 +1,18 @@
+[
+  {
+    "event_id": "ps-fixture-missing-escrow",
+    "op": "release_escrow",
+    "id": "PS-FIX-RELEASE-MISSING",
+    "escrow": "PS-NO-SUCH-ESCROW",
+    "at": 3
+  },
+  {
+    "event_id": "ps-fixture-joint-signature",
+    "op": "license",
+    "id": "PS-FIX-LICENSE-BAD",
+    "kind": "joint",
+    "customer": "fixture-customer",
+    "at": 3,
+    "until": 2
+  }
+]

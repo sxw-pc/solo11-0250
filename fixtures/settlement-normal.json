@@ -1,0 +1,7 @@
+[
+  {
+    "event_id": "settlement-fixture-scan",
+    "op": "reconcile",
+    "at": 2
+  }
+]

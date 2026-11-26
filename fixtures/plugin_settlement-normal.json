@@ -1,0 +1,18 @@
+[
+  {
+    "event_id": "ps-fixture-triparty",
+    "op": "triparty",
+    "id": "PS-FIX-TRI",
+    "customer": "fixture-customer",
+    "suppliers": ["original", "assignee"],
+    "escrow_account": "ps-escrow",
+    "signed_at": 1,
+    "effective_from": 1,
+    "signatures": ["original", "assignee", "customer"]
+  },
+  {
+    "event_id": "ps-fixture-scan",
+    "op": "reconcile",
+    "at": 2
+  }
+]

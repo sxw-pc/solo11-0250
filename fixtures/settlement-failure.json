@@ -1,0 +1,11 @@
+[
+  {
+    "event_id": "settlement-fixture-bad-window",
+    "op": "license",
+    "id": "SETTLEMENT-FIX-LICENSE-BAD",
+    "kind": "joint",
+    "customer": "fixture-customer",
+    "at": 3,
+    "until": 2
+  }
+]
