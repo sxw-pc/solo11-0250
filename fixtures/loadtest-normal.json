@@ -1,0 +1,5 @@
+[
+  {"event_id":"trial-plan","op":"plan","id":"trial-plan","service":"api","generation":1,"clients":10,"until":20},
+  {"event_id":"trial-sample","op":"sample","id":"trial-sample","plan":"trial-plan","at":2,"latency_ms":5,"ok":true},
+  {"event_id":"trial-report","op":"report","id":"trial-report","plan":"trial-plan"}
+]

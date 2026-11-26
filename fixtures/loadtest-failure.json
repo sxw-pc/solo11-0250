@@ -1,0 +1,4 @@
+[
+  {"event_id":"trial-invalid","op":"plan","id":"trial-invalid","service":"api","generation":1,"clients":0,"until":20},
+  {"event_id":"trial-missing","op":"sample","id":"trial-missing","plan":"missing","at":2,"latency_ms":5,"ok":true}
+]
