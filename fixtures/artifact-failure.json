@@ -1,0 +1,4 @@
+[
+  {"event_id":"artifact-invalid","op":"bundle","id":"artifact-invalid","service":"api","generation":1,"digest":"","signer":"team"},
+  {"event_id":"artifact-missing","op":"mount","id":"artifact-missing","bundle":"missing","attempt":"attempt-2","node":"node-1"}
+]

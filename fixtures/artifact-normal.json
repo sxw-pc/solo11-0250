@@ -1,0 +1,5 @@
+[
+  {"event_id":"artifact-bundle","op":"bundle","id":"artifact-bundle","service":"api","generation":1,"digest":"sha256:abc","signer":"team"},
+  {"event_id":"artifact-attest","op":"attest","id":"artifact-attest","bundle":"artifact-bundle","builder":"builder-1","manifest_digest":"sha256:manifest","at":1},
+  {"event_id":"artifact-mount","op":"mount","id":"artifact-mount","bundle":"artifact-bundle","attempt":"attempt-1","node":"node-1"}
+]
