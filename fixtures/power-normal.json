@@ -1,0 +1,5 @@
+[
+  {"event_id":"power-feed","op":"feed","id":"power-feed","rack":"rack-a","rated_kw":8,"revision":1},
+  {"event_id":"power-reserve","op":"reserve","id":"power-reserve","feed":"power-feed","node":"node-a","kw":3},
+  {"event_id":"power-observe","op":"observe","id":"power-observe","feed":"power-feed","at":2,"measured_kw":4}
+]

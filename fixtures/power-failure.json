@@ -1,0 +1,4 @@
+[
+  {"event_id":"power-invalid-feed","op":"feed","id":"invalid","rack":"rack-a","rated_kw":0,"revision":1},
+  {"event_id":"power-invalid-reserve","op":"reserve","id":"bad","feed":"missing","node":"node-a","kw":3}
+]
