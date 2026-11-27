@@ -1,0 +1,1160 @@
+[
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "rev-svc-b",
+      "op": "revision",
+      "id": "svc-b",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "seal-svc-b",
+      "op": "seal",
+      "id": "svc-b",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "token-b",
+      "op": "token",
+      "id": "token-b",
+      "service": "svc-b",
+      "generation": 1,
+      "expires": 10000,
+      "at": 0
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "slot-slot-n",
+      "op": "slot",
+      "id": "slot-n",
+      "node": "node-n",
+      "capacity": 100,
+      "generation": 1,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "plan-wave-b",
+      "op": "plan",
+      "id": "wave-b",
+      "service": "svc-b",
+      "generation": 1,
+      "deadline": 10000
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "att-slot-n",
+      "op": "launch",
+      "id": "attempt-node-n-slot-n",
+      "wave": "wave-b",
+      "slot": "slot-n",
+      "token": "token-b",
+      "at": 100,
+      "expires": 400
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-zone",
+      "op": "zone",
+      "id": "rack1-zone",
+      "rack": "rack-1",
+      "limit_c": 45,
+      "revision": 1
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-profile",
+      "op": "profile",
+      "zone": "rack1-zone",
+      "reference_c": 40.0,
+      "ambient_c": 25.0,
+      "cooling_tau": 60.0,
+      "revision": 1
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-node",
+      "op": "node",
+      "id": "node-n",
+      "zone": "rack1-zone",
+      "serial": "SN-N-0001",
+      "rack": "rack-1",
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-sensor-in",
+      "op": "sensor",
+      "id": "sensor-n-inlet",
+      "node": "node-n",
+      "position": "inlet",
+      "serial": "PROBE-IN-77",
+      "bias_c": 0.0,
+      "uncertainty_c": 0.3,
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-sensor-chip",
+      "op": "sensor",
+      "id": "sensor-n-chip",
+      "node": "node-n",
+      "position": "near_chip",
+      "serial": "PROBE-CHIP-09",
+      "bias_c": 0.0,
+      "uncertainty_c": 0.5,
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-legacy-sample",
+      "op": "sample",
+      "id": "sample-n-inlet-100",
+      "zone": "rack1-zone",
+      "sensor": "sensor-n-inlet",
+      "at": 100,
+      "celsius": 36
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-legacy-check",
+      "op": "check",
+      "id": "check-n-1",
+      "zone": "rack1-zone",
+      "node": "node-n",
+      "sample": "sample-n-inlet-100"
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-cal-late",
+      "op": "calibrate",
+      "id": "cal-n-chip-1",
+      "sensor": "sensor-n-chip",
+      "bias_c": -1.5,
+      "uncertainty_c": 1.2,
+      "effective_at": 100,
+      "rationale": "laboratory re-calibration; documented offset on near-chip probe"
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-in-0",
+      "op": "observe",
+      "id": "ob-n-in-0",
+      "sensor": "sensor-n-inlet",
+      "at": 100,
+      "raw_celsius": 36.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-in-1",
+      "op": "observe",
+      "id": "ob-n-in-1",
+      "sensor": "sensor-n-inlet",
+      "at": 150,
+      "raw_celsius": 38.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-in-2",
+      "op": "observe",
+      "id": "ob-n-in-2",
+      "sensor": "sensor-n-inlet",
+      "at": 200,
+      "raw_celsius": 37.5,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-in-3",
+      "op": "observe",
+      "id": "ob-n-in-3",
+      "sensor": "sensor-n-inlet",
+      "at": 250,
+      "raw_celsius": 37.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-in-4",
+      "op": "observe",
+      "id": "ob-n-in-4",
+      "sensor": "sensor-n-inlet",
+      "at": 300,
+      "raw_celsius": 36.5,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-in-5",
+      "op": "observe",
+      "id": "ob-n-in-5",
+      "sensor": "sensor-n-inlet",
+      "at": 350,
+      "raw_celsius": 36.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-in-6",
+      "op": "observe",
+      "id": "ob-n-in-6",
+      "sensor": "sensor-n-inlet",
+      "at": 400,
+      "raw_celsius": 36.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-ch-0",
+      "op": "observe",
+      "id": "ob-n-ch-0",
+      "sensor": "sensor-n-chip",
+      "at": 100,
+      "raw_celsius": 46.0,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-ch-1",
+      "op": "observe",
+      "id": "ob-n-ch-1",
+      "sensor": "sensor-n-chip",
+      "at": 150,
+      "raw_celsius": 49.0,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-ch-2",
+      "op": "observe",
+      "id": "ob-n-ch-2",
+      "sensor": "sensor-n-chip",
+      "at": 200,
+      "raw_celsius": 48.0,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-ch-3",
+      "op": "observe",
+      "id": "ob-n-ch-3",
+      "sensor": "sensor-n-chip",
+      "at": 250,
+      "raw_celsius": 47.0,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-ch-4",
+      "op": "observe",
+      "id": "ob-n-ch-4",
+      "sensor": "sensor-n-chip",
+      "at": 300,
+      "raw_celsius": 46.5,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-ch-5",
+      "op": "observe",
+      "id": "ob-n-ch-5",
+      "sensor": "sensor-n-chip",
+      "at": 350,
+      "raw_celsius": 46.0,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-ch-6",
+      "op": "observe",
+      "id": "ob-n-ch-6",
+      "sensor": "sensor-n-chip",
+      "at": 400,
+      "raw_celsius": 45.5,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-cap",
+      "op": "capacity",
+      "id": "cap-n",
+      "node": "node-n",
+      "committed_capacity": 100,
+      "effective_at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-evidence",
+      "op": "evidence",
+      "id": "mfr-n",
+      "node": "node-n",
+      "dose_limit": 1662.5,
+      "max_operating_c": 50.0,
+      "inspection": "independent inspection: no permanent damage found",
+      "warranty_terms": {
+        "derated_with_monitoring": true,
+        "replace_suspect_part": true,
+        "full_warranty_after_replacement": true
+      },
+      "at": 410
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-adjudicate",
+      "op": "adjudicate",
+      "id": "case-n-1",
+      "node": "node-n",
+      "at": 420,
+      "checks": [
+        "check-n-1"
+      ]
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-remediate-derate",
+      "op": "remediation",
+      "id": "rem-n-derate",
+      "node": "node-n",
+      "decision": "case-n-1:fitness",
+      "kind": "derated",
+      "derated_capacity": 40,
+      "reinspect_due": 2000,
+      "hardware_fee": 0.0,
+      "at": 430
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "n-probe-healthy",
+      "op": "health_probe",
+      "id": "probe-n-1",
+      "node": "node-n",
+      "healthy": true,
+      "at": 500,
+      "note": "post-restriction healthy probe must not clear the limit"
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "rev-svc-b2",
+      "op": "revision",
+      "id": "svc-b2",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "seal-svc-b2",
+      "op": "seal",
+      "id": "svc-b2",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "token-b2",
+      "op": "token",
+      "id": "token-b2",
+      "service": "svc-b2",
+      "generation": 1,
+      "expires": 10000,
+      "at": 0
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "slot-slot-p",
+      "op": "slot",
+      "id": "slot-p",
+      "node": "node-p",
+      "capacity": 100,
+      "generation": 1,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "plan-wave-b2",
+      "op": "plan",
+      "id": "wave-b2",
+      "service": "svc-b2",
+      "generation": 1,
+      "deadline": 10000
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "att-slot-p",
+      "op": "launch",
+      "id": "attempt-node-p-slot-p",
+      "wave": "wave-b2",
+      "slot": "slot-p",
+      "token": "token-b2",
+      "at": 100,
+      "expires": 400
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-node",
+      "op": "node",
+      "id": "node-p",
+      "zone": "rack1-zone",
+      "serial": "SN-P-0002",
+      "rack": "rack-1",
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-sensor-in",
+      "op": "sensor",
+      "id": "sensor-p-inlet",
+      "node": "node-p",
+      "position": "inlet",
+      "serial": "PROBE-IN-78",
+      "bias_c": 0.0,
+      "uncertainty_c": 0.3,
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-sensor-chip",
+      "op": "sensor",
+      "id": "sensor-p-chip",
+      "node": "node-p",
+      "position": "near_chip",
+      "serial": "PROBE-CHIP-10",
+      "bias_c": -1.5,
+      "uncertainty_c": 1.2,
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-in-0",
+      "op": "observe",
+      "id": "ob-p-in-0",
+      "sensor": "sensor-p-inlet",
+      "at": 100,
+      "raw_celsius": 36.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-in-1",
+      "op": "observe",
+      "id": "ob-p-in-1",
+      "sensor": "sensor-p-inlet",
+      "at": 200,
+      "raw_celsius": 37.5,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-in-2",
+      "op": "observe",
+      "id": "ob-p-in-2",
+      "sensor": "sensor-p-inlet",
+      "at": 300,
+      "raw_celsius": 36.5,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-in-3",
+      "op": "observe",
+      "id": "ob-p-in-3",
+      "sensor": "sensor-p-inlet",
+      "at": 400,
+      "raw_celsius": 36.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-ch-0",
+      "op": "observe",
+      "id": "ob-p-ch-0",
+      "sensor": "sensor-p-chip",
+      "at": 100,
+      "raw_celsius": 46.0,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-ch-1",
+      "op": "observe",
+      "id": "ob-p-ch-1",
+      "sensor": "sensor-p-chip",
+      "at": 200,
+      "raw_celsius": 48.0,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-ch-2",
+      "op": "observe",
+      "id": "ob-p-ch-2",
+      "sensor": "sensor-p-chip",
+      "at": 300,
+      "raw_celsius": 46.5,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-ch-3",
+      "op": "observe",
+      "id": "ob-p-ch-3",
+      "sensor": "sensor-p-chip",
+      "at": 400,
+      "raw_celsius": 45.5,
+      "uncertainty_c": 0.5
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-cap",
+      "op": "capacity",
+      "id": "cap-p",
+      "node": "node-p",
+      "committed_capacity": 100,
+      "effective_at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-evidence",
+      "op": "evidence",
+      "id": "mfr-p",
+      "node": "node-p",
+      "dose_limit": 1662.5,
+      "max_operating_c": 50.0,
+      "inspection": "independent inspection: no permanent damage found",
+      "warranty_terms": {
+        "derated_with_monitoring": true,
+        "replace_suspect_part": true
+      },
+      "at": 410
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-adjudicate",
+      "op": "adjudicate",
+      "id": "case-p-1",
+      "node": "node-p",
+      "at": 420
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-remediate-stop",
+      "op": "remediation",
+      "id": "rem-p-stop",
+      "node": "node-p",
+      "decision": "case-p-1:fitness",
+      "kind": "reinspect_shutdown",
+      "reinspect_due": 2000,
+      "at": 430
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-reinspect-fail",
+      "op": "reinspect",
+      "id": "ri-p-fail",
+      "remediation": "rem-p-stop",
+      "node": "node-p",
+      "at": 2000,
+      "passed": false,
+      "finding": "thermal interface degradation persists"
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "p-remediate-replace",
+      "op": "remediation",
+      "id": "rem-p-replace",
+      "node": "node-p",
+      "decision": "case-p-1:fitness",
+      "kind": "replaced",
+      "capacity_ready_at": 2600,
+      "hardware_fee": 1200.0,
+      "at": 2100
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "rev-svc-c",
+      "op": "revision",
+      "id": "svc-c",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "seal-svc-c",
+      "op": "seal",
+      "id": "svc-c",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "token-c",
+      "op": "token",
+      "id": "token-c",
+      "service": "svc-c",
+      "generation": 1,
+      "expires": 10000,
+      "at": 0
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "slot-slot-q",
+      "op": "slot",
+      "id": "slot-q",
+      "node": "node-q",
+      "capacity": 100,
+      "generation": 1,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "plan-wave-c",
+      "op": "plan",
+      "id": "wave-c",
+      "service": "svc-c",
+      "generation": 1,
+      "deadline": 10000
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "att-slot-q",
+      "op": "launch",
+      "id": "attempt-node-q-slot-q",
+      "wave": "wave-c",
+      "slot": "slot-q",
+      "token": "token-c",
+      "at": 100,
+      "expires": 300
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-node",
+      "op": "node",
+      "id": "node-q",
+      "zone": "rack1-zone",
+      "serial": "SN-Q-0003",
+      "rack": "rack-1",
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-sensor-chip",
+      "op": "sensor",
+      "id": "sensor-q-chip",
+      "node": "node-q",
+      "position": "near_chip",
+      "serial": "PROBE-CHIP-11",
+      "bias_c": 0.0,
+      "uncertainty_c": 0.3,
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-disconnect",
+      "op": "disconnect",
+      "id": "out-q-1",
+      "sensor": "sensor-q-chip",
+      "at": 140,
+      "reason": "probe cable fault"
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-reconnect",
+      "op": "reconnect",
+      "id": "out-q-1-end",
+      "sensor": "sensor-q-chip",
+      "at": 220
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-ch-0",
+      "op": "observe",
+      "id": "ob-q-ch-0",
+      "sensor": "sensor-q-chip",
+      "at": 100,
+      "raw_celsius": 41.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-ch-1",
+      "op": "observe",
+      "id": "ob-q-ch-1",
+      "sensor": "sensor-q-chip",
+      "at": 130,
+      "raw_celsius": 42.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-ch-2",
+      "op": "observe",
+      "id": "ob-q-ch-2",
+      "sensor": "sensor-q-chip",
+      "at": 230,
+      "raw_celsius": 41.0,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-ch-3",
+      "op": "observe",
+      "id": "ob-q-ch-3",
+      "sensor": "sensor-q-chip",
+      "at": 300,
+      "raw_celsius": 40.5,
+      "uncertainty_c": 0.3
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-cap",
+      "op": "capacity",
+      "id": "cap-q",
+      "node": "node-q",
+      "committed_capacity": 80,
+      "effective_at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-evidence",
+      "op": "evidence",
+      "id": "mfr-q",
+      "node": "node-q",
+      "dose_limit": 100000.0,
+      "max_operating_c": 60.0,
+      "inspection": "no damage evidence",
+      "warranty_terms": {},
+      "at": 310
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "q-adjudicate",
+      "op": "adjudicate",
+      "id": "case-q-1",
+      "node": "node-q",
+      "at": 320
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "rev-svc-d1",
+      "op": "revision",
+      "id": "svc-d1",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "seal-svc-d1",
+      "op": "seal",
+      "id": "svc-d1",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "token-d1",
+      "op": "token",
+      "id": "token-d1",
+      "service": "svc-d1",
+      "generation": 1,
+      "expires": 10000,
+      "at": 0
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "slot-slot-r1",
+      "op": "slot",
+      "id": "slot-r1",
+      "node": "node-r",
+      "capacity": 100,
+      "generation": 1,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "plan-wave-d1",
+      "op": "plan",
+      "id": "wave-d1",
+      "service": "svc-d1",
+      "generation": 1,
+      "deadline": 10000
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "att-slot-r1",
+      "op": "launch",
+      "id": "attempt-node-r-slot-r1",
+      "wave": "wave-d1",
+      "slot": "slot-r1",
+      "token": "token-d1",
+      "at": 100,
+      "expires": 300
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "rev-svc-d2",
+      "op": "revision",
+      "id": "svc-d2",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "seal-svc-d2",
+      "op": "seal",
+      "id": "svc-d2",
+      "generation": 1
+    }
+  },
+  {
+    "subsystem": "contract",
+    "payload": {
+      "event_id": "token-d2",
+      "op": "token",
+      "id": "token-d2",
+      "service": "svc-d2",
+      "generation": 1,
+      "expires": 10000,
+      "at": 0
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "slot-slot-r2",
+      "op": "slot",
+      "id": "slot-r2",
+      "node": "node-r",
+      "capacity": 100,
+      "generation": 1,
+      "healthy": true
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "plan-wave-d2",
+      "op": "plan",
+      "id": "wave-d2",
+      "service": "svc-d2",
+      "generation": 1,
+      "deadline": 10000
+    }
+  },
+  {
+    "subsystem": "wave",
+    "payload": {
+      "event_id": "att-slot-r2",
+      "op": "launch",
+      "id": "attempt-node-r-slot-r2",
+      "wave": "wave-d2",
+      "slot": "slot-r2",
+      "token": "token-d2",
+      "at": 500,
+      "expires": 700
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r-node",
+      "op": "node",
+      "id": "node-r",
+      "zone": "rack1-zone",
+      "serial": "SN-R-0004",
+      "rack": "rack-1",
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r-sensor-chip",
+      "op": "sensor",
+      "id": "sensor-r-chip",
+      "node": "node-r",
+      "position": "near_chip",
+      "serial": "PROBE-CHIP-12",
+      "bias_c": 0.0,
+      "uncertainty_c": 0.4,
+      "at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r1-ch-0",
+      "op": "observe",
+      "id": "ob-r1-ch-0",
+      "sensor": "sensor-r-chip",
+      "at": 100,
+      "raw_celsius": 44.0,
+      "uncertainty_c": 0.4
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r1-ch-1",
+      "op": "observe",
+      "id": "ob-r1-ch-1",
+      "sensor": "sensor-r-chip",
+      "at": 200,
+      "raw_celsius": 45.0,
+      "uncertainty_c": 0.4
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r1-ch-2",
+      "op": "observe",
+      "id": "ob-r1-ch-2",
+      "sensor": "sensor-r-chip",
+      "at": 300,
+      "raw_celsius": 44.0,
+      "uncertainty_c": 0.4
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r-cal-late",
+      "op": "calibrate",
+      "id": "cal-r-1",
+      "sensor": "sensor-r-chip",
+      "bias_c": -1.0,
+      "uncertainty_c": 0.8,
+      "effective_at": 100,
+      "rationale": "correction issued after first wave; originals retained"
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r2-ch-0",
+      "op": "observe",
+      "id": "ob-r2-ch-0",
+      "sensor": "sensor-r-chip",
+      "at": 500,
+      "raw_celsius": 44.0,
+      "uncertainty_c": 0.4
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r2-ch-1",
+      "op": "observe",
+      "id": "ob-r2-ch-1",
+      "sensor": "sensor-r-chip",
+      "at": 600,
+      "raw_celsius": 45.0,
+      "uncertainty_c": 0.4
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r2-ch-2",
+      "op": "observe",
+      "id": "ob-r2-ch-2",
+      "sensor": "sensor-r-chip",
+      "at": 700,
+      "raw_celsius": 44.0,
+      "uncertainty_c": 0.4
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r-cap",
+      "op": "capacity",
+      "id": "cap-r",
+      "node": "node-r",
+      "committed_capacity": 60,
+      "effective_at": 100
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r-evidence",
+      "op": "evidence",
+      "id": "mfr-r",
+      "node": "node-r",
+      "dose_limit": 1400.0,
+      "max_operating_c": 50.0,
+      "inspection": "no permanent damage",
+      "warranty_terms": {
+        "derated_with_monitoring": true
+      },
+      "at": 710
+    }
+  },
+  {
+    "subsystem": "thermal",
+    "payload": {
+      "event_id": "r-adjudicate",
+      "op": "adjudicate",
+      "id": "case-r-1",
+      "node": "node-r",
+      "at": 720
+    }
+  }
+]
