@@ -1,8 +1,8 @@
 from .store import act,one,many
 SCHEMA='''
-CREATE TABLE IF NOT EXISTS boot_waves(id TEXT PRIMARY KEY,service TEXT,generation INTEGER,deadline INTEGER,level INTEGER,status TEXT);
+CREATE TABLE IF NOT EXISTS boot_waves(id TEXT PRIMARY KEY,service TEXT,generation INTEGER,deadline INTEGER,level INTEGER,status TEXT,digest TEXT,artifact TEXT);
 CREATE TABLE IF NOT EXISTS startup_slots(id TEXT PRIMARY KEY,node TEXT,capacity INTEGER,generation INTEGER,healthy INTEGER);
-CREATE TABLE IF NOT EXISTS start_attempts(id TEXT PRIMARY KEY,wave TEXT,slot TEXT,generation INTEGER,slot_generation INTEGER,attempt_no INTEGER,started INTEGER,expires INTEGER,status TEXT);
+CREATE TABLE IF NOT EXISTS start_attempts(id TEXT PRIMARY KEY,wave TEXT,slot TEXT,generation INTEGER,slot_generation INTEGER,attempt_no INTEGER,started INTEGER,expires INTEGER,status TEXT,digest TEXT);
 '''
 
 def handle(db,x):
@@ -21,7 +21,15 @@ def handle(db,x):
         if any(not one(db,"SELECT 1 FROM service_revisions WHERE id=? AND status='sealed'",(a['service'],)) for a in levels):
             return {'decision':'unsealed_dependency'}
         level=max((a['level'] for a in levels),default=0)
-        db.execute('INSERT INTO boot_waves VALUES(?,?,?,?,?,?)',(x['id'],x['service'],x['generation'],x['deadline'],level,'planned'))
+        # A revision sealed with an artifact pins that artifact's approved digest
+        # on the wave; every launch of the wave must present exactly those bytes.
+        digest=None
+        artifact_id=s['artifact']
+        if artifact_id:
+            bundle=one(db,'SELECT * FROM image_bundles WHERE id=?',(artifact_id,))
+            if not bundle:return {'decision':'artifact_unavailable'}
+            digest=bundle['digest']
+        db.execute('INSERT INTO boot_waves VALUES(?,?,?,?,?,?,?,?)',(x['id'],x['service'],x['generation'],x['deadline'],level,'planned',digest,artifact_id))
         return {'decision':'planned','level':level}
     if op=='launch':
         w=one(db,'SELECT * FROM boot_waves WHERE id=?',(x['wave'],))
@@ -32,6 +40,13 @@ def handle(db,x):
         current=one(db,'SELECT * FROM service_revisions WHERE id=?',(w['service'],))
         if not current or current['generation']!=w['generation'] or current['status']!='sealed':
             return {'decision':'stale_service_contract'}
+        if w['digest'] is not None:
+            # The wave pinned the approved digest at plan time: the launch must
+            # name exactly those bytes and the pinned artifact must still hold a
+            # live provenance certificate (its trust basis not revoked).
+            if x.get('digest')!=w['digest']:return {'decision':'digest_mismatch'}
+            from . import artifact
+            if not artifact.valid_certificate(db,w['artifact']):return {'decision':'artifact_uncertified'}
         if x['expires']<=x['at'] or x['expires']>w['deadline']:return {'decision':'invalid_deadline'}
         occupied=one(db,"SELECT COUNT(*) n FROM start_attempts WHERE slot=? AND status='running'",(x['slot'],))['n']
         if occupied>=slot['capacity']:return {'decision':'slot_full'}
@@ -44,7 +59,7 @@ def handle(db,x):
                     grant=one(db,"SELECT 1 FROM degrade_grants WHERE service=? AND dependency=? AND service_generation=? AND status='active' AND until_ts>=?",(w['service'],d['dependency'],w['generation'],x['at']))
                     if not grant:return {'decision':'dependency_not_ready','service':d['dependency']}
         attempt_no=one(db,'SELECT COALESCE(MAX(attempt_no),0)+1 next FROM start_attempts WHERE wave=?',(x['wave'],))['next']
-        db.execute('INSERT INTO start_attempts VALUES(?,?,?,?,?,?,?,?,?)',(x['id'],x['wave'],x['slot'],w['generation'],slot['generation'],attempt_no,x['at'],x['expires'],'running'))
+        db.execute('INSERT INTO start_attempts VALUES(?,?,?,?,?,?,?,?,?,?)',(x['id'],x['wave'],x['slot'],w['generation'],slot['generation'],attempt_no,x['at'],x['expires'],'running',w['digest']))
         db.execute("UPDATE boot_waves SET status='running' WHERE id=?",(w['id'],))
         return {'decision':'launched','attempt_no':attempt_no}
     if op=='timeout':

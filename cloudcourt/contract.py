@@ -1,6 +1,6 @@
 from .store import act,one,many
 SCHEMA='''
-CREATE TABLE IF NOT EXISTS service_revisions(id TEXT PRIMARY KEY,generation INTEGER,status TEXT,critical INTEGER);
+CREATE TABLE IF NOT EXISTS service_revisions(id TEXT PRIMARY KEY,generation INTEGER,status TEXT,critical INTEGER,artifact TEXT);
 CREATE TABLE IF NOT EXISTS dependency_edges(service TEXT,dependency TEXT,critical INTEGER,revision INTEGER,PRIMARY KEY(service,dependency));
 CREATE TABLE IF NOT EXISTS bootstrap_tokens(id TEXT PRIMARY KEY,service TEXT,generation INTEGER,expires INTEGER,status TEXT);
 CREATE TABLE IF NOT EXISTS degrade_grants(id TEXT PRIMARY KEY,service TEXT,dependency TEXT,service_generation INTEGER,approver TEXT,until_ts INTEGER,status TEXT);
@@ -11,7 +11,7 @@ def handle(db,x):
     if op=='revision':
         old=one(db,'SELECT * FROM service_revisions WHERE id=?',(x['id'],))
         if old and x['generation']<=old['generation']:return {'decision':'stale_revision'}
-        db.execute('INSERT INTO service_revisions VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET generation=excluded.generation,status=excluded.status,critical=excluded.critical',(x['id'],x['generation'],'draft',int(x.get('critical',True))))
+        db.execute('INSERT INTO service_revisions VALUES(?,?,?,?,NULL) ON CONFLICT(id) DO UPDATE SET generation=excluded.generation,status=excluded.status,critical=excluded.critical,artifact=excluded.artifact',(x['id'],x['generation'],'draft',int(x.get('critical',True))))
         db.execute("UPDATE bootstrap_tokens SET status='stale' WHERE service=? AND generation<?",(x['id'],x['generation']))
         db.execute('DELETE FROM dependency_edges WHERE service=? AND revision<?',(x['id'],x['generation']))
         return {'decision':'revision_recorded'}
@@ -29,7 +29,14 @@ def handle(db,x):
     if op=='seal':
         s=one(db,'SELECT * FROM service_revisions WHERE id=?',(x['id'],))
         if not s or s['status']!='draft' or s['generation']!=x['generation']:return {'decision':'not_sealable'}
-        db.execute("UPDATE service_revisions SET status='sealed' WHERE id=?",(x['id'],))
+        if x.get('artifact'):
+            # Sealing can lock the revision to an actual registered build artifact.
+            bundle=one(db,'SELECT * FROM image_bundles WHERE id=?',(x['artifact'],))
+            if not bundle or bundle['service']!=x['id'] or bundle['generation']!=x['generation']:
+                return {'decision':'artifact_unavailable'}
+            db.execute("UPDATE service_revisions SET status='sealed',artifact=? WHERE id=?",(x['artifact'],x['id']))
+        else:
+            db.execute("UPDATE service_revisions SET status='sealed' WHERE id=?",(x['id'],))
         return {'decision':'sealed'}
     if op=='token':
         s=one(db,'SELECT * FROM service_revisions WHERE id=?',(x['service'],))
