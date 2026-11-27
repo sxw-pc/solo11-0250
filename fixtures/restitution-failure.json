@@ -1,0 +1,27 @@
+[
+  {
+    "event_id": "rfx1",
+    "op": "adjudicate",
+    "id": "rfx-adj-1",
+    "case_id": "rfx-case-1",
+    "sla": "SLA-MISSING",
+    "wave": "rfx-wave-1"
+  },
+  {
+    "event_id": "rfx2",
+    "op": "substitute_capacity",
+    "id": "rfx-batch-1",
+    "batch_id": "rfx-batch-1",
+    "accepted": false,
+    "independent_instances": 0
+  },
+  {
+    "event_id": "rfx3",
+    "op": "settle",
+    "case_id": "rfx-case-1"
+  },
+  {
+    "event_id": "rfx4",
+    "op": "not_a_real_op"
+  }
+]

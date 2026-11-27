@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS credit_drafts(
 
 
 def provisional(db, draft_id, sla_id):
-    db.executescript(SCHEMA)
+    # SCHEMA is applied by store.connect; executescript would implicitly
+    # commit the surrounding IMMEDIATE event transaction.
     sla = db.execute('SELECT service,unit_credit FROM customer_slas WHERE id=?',
                      (sla_id,)).fetchone()
     if not sla:

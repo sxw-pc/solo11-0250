@@ -1,0 +1,71 @@
+[
+  {
+    "event_id": "rn1",
+    "op": "instance_accept",
+    "id": "rn-inst-1",
+    "sla": "SLA-RN",
+    "instance_id": "rn-i-1",
+    "node": "rn-node-1",
+    "accepted_at": 1
+  },
+  {
+    "event_id": "rn2",
+    "op": "recovery_mark",
+    "id": "rn-rec-1",
+    "sla": "SLA-RN",
+    "service": "orders",
+    "at": 50
+  },
+  {
+    "event_id": "rn3",
+    "op": "entry_receipt",
+    "id": "rn-entry-1",
+    "sla": "SLA-RN",
+    "order_key": "rn-ord-1",
+    "client_request_id": "rn-req-1",
+    "amount": 100,
+    "service_fee": 10,
+    "received_at": 10
+  },
+  {
+    "event_id": "rn4",
+    "op": "customer_confirmation",
+    "id": "rn-conf-1",
+    "sla": "SLA-RN",
+    "order_key": "rn-ord-1",
+    "signed_at": 11
+  },
+  {
+    "event_id": "rn5",
+    "op": "platform_order",
+    "id": "rn-pord-1",
+    "sla": "SLA-RN",
+    "order_key": "rn-ord-1",
+    "seq": 1,
+    "processed_at": 12
+  },
+  {
+    "event_id": "rn6",
+    "op": "payer_charge",
+    "id": "rn-chg-1",
+    "sla": "SLA-RN",
+    "order_key": "rn-ord-1",
+    "amount": 100,
+    "charged_at": 13
+  },
+  {
+    "event_id": "rn6-wave",
+    "op": "incident_wave",
+    "id": "rn-wave-1",
+    "service": "orders",
+    "status": "complete"
+  },
+  {
+    "event_id": "rn7",
+    "op": "adjudicate",
+    "id": "rn-adj-1",
+    "case_id": "rn-case-1",
+    "sla": "SLA-RN",
+    "wave": "rn-wave-1"
+  }
+]

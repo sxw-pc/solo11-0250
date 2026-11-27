@@ -1,0 +1,11 @@
+[
+  {
+    "event_id": "sn1",
+    "op": "sla_subscribe",
+    "sla_id": "SLA-RN",
+    "customer": "fixture-customer",
+    "service": "orders",
+    "min_healthy": 1,
+    "unit_credit": 10
+  }
+]
