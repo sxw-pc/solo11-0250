@@ -1,0 +1,33 @@
+[
+  {"subsystem": "contract", "payload": {"event_id": "xs-rev-db", "op": "revision", "id": "database", "generation": 1}},
+  {"subsystem": "contract", "payload": {"event_id": "xs-rev-b", "op": "revision", "id": "service-b", "generation": 1}},
+  {"subsystem": "contract", "payload": {"event_id": "xs-edge-b-db", "op": "edge", "service": "service-b", "dependency": "database", "critical": true, "revision": 1}},
+  {"subsystem": "contract", "payload": {"event_id": "xs-seal-db", "op": "seal", "id": "database", "generation": 1}},
+  {"subsystem": "contract", "payload": {"event_id": "xs-seal-b", "op": "seal", "id": "service-b", "generation": 1}},
+  {"subsystem": "contract", "payload": {"event_id": "xs-tok-db", "op": "token", "id": "xs-token-db", "service": "database", "generation": 1, "expires": 100, "at": 0}},
+  {"subsystem": "contract", "payload": {"event_id": "xs-tok-b", "op": "token", "id": "xs-token-b", "service": "service-b", "generation": 1, "expires": 100, "at": 0}},
+  {"subsystem": "contract", "payload": {"event_id": "xs-degrade-b", "op": "degrade", "id": "xs-degrade-b", "service": "service-b", "dependency": "database", "approver": "zhao", "at": 7, "until": 16}},
+
+  {"subsystem": "duty", "payload": {"event_id": "xs-eq-db", "op": "equipment", "id": "xs-eq-db", "node": "node-db", "site": "site-1", "location": "rack-db"}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-eq-b", "op": "equipment", "id": "xs-eq-b", "node": "node-b", "site": "site-1", "location": "rack-b"}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-profile-b", "op": "service_profile", "service": "service-b", "site": "site-1", "service_level": "L2"}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-issuer", "op": "issuer", "id": "cta", "name": "Certified Technical Academy"}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-cert-a", "op": "certification", "id": "xs-cert-a", "actor": "alice", "name": "startup", "service_level": "L2", "site": "site-1", "issuer": "cta", "starts": 0, "expires": 100, "at": 0}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-cert-b", "op": "certification", "id": "xs-cert-b", "actor": "bob", "name": "startup", "service_level": "L2", "site": "site-1", "issuer": "cta", "starts": 0, "expires": 100, "at": 0}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-supervisor", "op": "supervisor", "id": "xs-sup-zhao", "actor": "zhao", "site": "site-1", "starts": 0, "ends": 100}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-shift-a", "op": "shift", "id": "shift-a", "actor": "alice", "site": "site-1", "starts": 0, "ends": 10, "qualification": "startup"}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-shift-b", "op": "shift", "id": "shift-b", "actor": "bob", "site": "site-1", "starts": 10, "ends": 24, "qualification": "startup"}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-session-a", "op": "session_start", "id": "session-a", "actor": "alice", "site": "site-1", "at": 0, "permissions": ["launch", "retry", "rollback", "publish"]}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-session-b", "op": "session_start", "id": "session-b", "actor": "bob", "site": "site-1", "at": 8, "independent": true, "node": "node-b", "permissions": ["launch", "retry", "rollback", "publish"]}},
+
+  {"subsystem": "wave", "payload": {"event_id": "xs-slot-db", "op": "slot", "id": "slot-db", "node": "node-db", "capacity": 1, "generation": 1, "healthy": true}},
+  {"subsystem": "wave", "payload": {"event_id": "xs-slot-b", "op": "slot", "id": "slot-b", "node": "node-b", "capacity": 1, "generation": 1, "healthy": true}},
+  {"subsystem": "wave", "payload": {"event_id": "xs-plan-db", "op": "plan", "id": "wave-db", "service": "database", "generation": 1, "deadline": 30}},
+  {"subsystem": "wave", "payload": {"event_id": "xs-plan-b", "op": "plan", "id": "wave-b", "service": "service-b", "generation": 1, "deadline": 30}},
+  {"subsystem": "wave", "payload": {"event_id": "xs-launch-db", "op": "launch", "id": "try-db", "wave": "wave-db", "slot": "slot-db", "token": "xs-token-db", "at": 2, "expires": 20, "actor": "alice", "session": "session-a", "site": "site-1"}},
+  {"subsystem": "wave", "payload": {"event_id": "xs-launch-b", "op": "launch", "id": "try-b", "wave": "wave-b", "slot": "slot-b", "token": "xs-token-b", "at": 8, "expires": 19, "actor": "alice", "session": "session-a", "site": "site-1"}},
+
+  {"subsystem": "ready", "payload": {"event_id": "xs-case-b", "op": "case", "id": "rollback-b", "service": "service-b", "cause": "customer-visible regression pending decision", "at": 8}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-customer-1", "op": "customer_confirm", "id": "customer-action-1", "service": "service-b", "operation": "customer-approved stabilisation window", "customer": "customer-x", "at": 6, "valid_until": 25, "site": "site-1"}},
+  {"subsystem": "duty", "payload": {"event_id": "xs-handoff-open", "op": "handoff_open", "id": "handoff-1", "outgoing": "shift-a", "incoming": "shift-b", "at": 9, "site": "site-1", "service_level": "L2"}}
+]

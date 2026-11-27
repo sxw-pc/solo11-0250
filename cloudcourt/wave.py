@@ -1,4 +1,5 @@
 from .store import act,one,many
+from . import duty
 SCHEMA='''
 CREATE TABLE IF NOT EXISTS boot_waves(id TEXT PRIMARY KEY,service TEXT,generation INTEGER,deadline INTEGER,level INTEGER,status TEXT);
 CREATE TABLE IF NOT EXISTS startup_slots(id TEXT PRIMARY KEY,node TEXT,capacity INTEGER,generation INTEGER,healthy INTEGER);
@@ -24,6 +25,8 @@ def handle(db,x):
         db.execute('INSERT INTO boot_waves VALUES(?,?,?,?,?,?)',(x['id'],x['service'],x['generation'],x['deadline'],level,'planned'))
         return {'decision':'planned','level':level}
     if op=='launch':
+        denied=duty.gate(db,x)
+        if denied:return denied
         w=one(db,'SELECT * FROM boot_waves WHERE id=?',(x['wave'],))
         slot=one(db,'SELECT * FROM startup_slots WHERE id=?',(x['slot'],))
         token=one(db,'SELECT * FROM bootstrap_tokens WHERE id=?',(x['token'],))
@@ -54,6 +57,8 @@ def handle(db,x):
         db.execute("UPDATE boot_waves SET status='failed' WHERE id=?",(a['wave'],))
         return {'decision':'timed_out'}
     if op=='retry':
+        denied=duty.gate(db,x)
+        if denied:return denied
         old=one(db,'SELECT * FROM start_attempts WHERE id=?',(x['old'],))
         if not old or old['status']!='timed_out':return {'decision':'not_retryable'}
         db.execute("UPDATE boot_waves SET status='planned' WHERE id=?",(old['wave'],))

@@ -1,4 +1,5 @@
 from .store import act,one,many
+from . import duty
 SCHEMA='''
 CREATE TABLE IF NOT EXISTS probe_samples(id TEXT PRIMARY KEY,attempt TEXT,at INTEGER,healthy INTEGER);
 CREATE TABLE IF NOT EXISTS readiness_receipts(id TEXT PRIMARY KEY,service TEXT,generation INTEGER,attempt TEXT,status TEXT,published_at INTEGER,degrade_until INTEGER);
@@ -8,12 +9,16 @@ CREATE TABLE IF NOT EXISTS rollback_cases(id TEXT PRIMARY KEY,service TEXT,cause
 def handle(db,x):
     op=x['op']
     if op=='probe':
+        denied=duty.gate(db,x)
+        if denied:return denied
         a=one(db,'SELECT * FROM start_attempts WHERE id=?',(x['attempt'],))
         if not a or a['status']!='running' or not a['started']<=x['at']<=a['expires']:
             return {'decision':'probe_outside_attempt'}
         db.execute('INSERT INTO probe_samples VALUES(?,?,?,?)',(x['id'],x['attempt'],x['at'],int(x['healthy'])))
         return {'decision':'sampled'}
     if op=='publish':
+        denied=duty.gate(db,x)
+        if denied:return denied
         a=one(db,'SELECT * FROM start_attempts WHERE id=?',(x['attempt'],))
         w=one(db,'SELECT * FROM boot_waves WHERE id=?',(a['wave'],)) if a else None
         if not w or a['status']!='running' or a['generation']!=w['generation'] or x['at']>a['expires']:
@@ -59,6 +64,8 @@ def handle(db,x):
                 db.execute('INSERT OR IGNORE INTO rollback_cases VALUES(?,?,?,?)',(x['event_id']+'-'+child['service'],child['service'],receipt['service'],'pending'))
         return {'decision':'expired','receipts':[r['id'] for r in due]}
     if op=='rollback':
+        denied=duty.gate(db,x)
+        if denied:return denied
         case=one(db,'SELECT * FROM rollback_cases WHERE id=?',(x['id'],))
         if not case or case['status']!='pending':return {'decision':'no_pending_case'}
         attempts=many(db,"SELECT a.id FROM start_attempts a JOIN boot_waves w ON w.id=a.wave WHERE w.service=? AND a.status='running'",(case['service'],))
@@ -66,6 +73,10 @@ def handle(db,x):
         db.execute("UPDATE boot_waves SET status='rolled_back' WHERE service=? AND status IN ('running','complete')",(case['service'],))
         db.execute("UPDATE rollback_cases SET status='complete' WHERE id=?",(x['id'],))
         return {'decision':'rolled_back','aborted_attempts':[a['id'] for a in attempts]}
+    if op in ('case','open_case','rollback_case'):
+        db.execute('INSERT INTO rollback_cases VALUES(?,?,?,?)',
+                   (x['id'],x['service'],x.get('cause','manual_case'),'pending'))
+        return {'decision':'rollback_case_opened'}
     return {'decision':'unknown_operation'}
 
 def run(db,x):return act(db,'ready',x,handle)
