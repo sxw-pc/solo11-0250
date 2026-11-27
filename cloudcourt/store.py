@@ -55,6 +55,19 @@ def act(db,subsystem,payload,handler):
         return result
 
 def replay(path):
+    # Once any event is quarantined by an erasure, the raw replay below
+    # could regenerate an erased operator from stale payloads, so the
+    # erasure-aware replay (which re-executes only redacted payloads and
+    # skips identity-bearing tables) takes over.
+    probe=connect(path)
+    try:
+        sealed=probe.execute('SELECT COUNT(*) FROM event_quarantine').fetchone()[0]
+    except Exception:
+        sealed=0
+    probe.close()
+    if sealed:
+        from . import operator_erasure
+        return operator_erasure.replay(path)
     from . import MODULES
     source=connect(path)
     events=many(source,'SELECT * FROM events ORDER BY seq')
